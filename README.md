@@ -81,8 +81,8 @@ pnpm test
 
 ## Inspiration
 
-- macOS `say` command — the OG
-- [steipete/sag](https://github.com/steipete/sag) — the spark
+- macOS `say` command — the OG.
+- steipete's `sag` in Go.
 
 ## License
 
