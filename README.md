@@ -71,6 +71,14 @@ ELEVENLABS_API_KEY    # Required
 ELEVENLABS_VOICE_ID   # Default voice (optional)
 ```
 
+## For AI Agents
+
+```bash
+npx skills ahmadawais/awaz
+```
+
+Agents can use awaz to speak text, generate audio files, or preview how text sounds. See [skills/SKILL.md](./skills/SKILL.md) for full agent instructions.
+
 ## Dev
 
 ```bash

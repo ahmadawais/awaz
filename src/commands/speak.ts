@@ -1,5 +1,7 @@
 import { Command } from 'commander';
+import { spawn } from 'node:child_process';
 import fs from 'node:fs';
+import os from 'node:os';
 import path from 'node:path';
 import ora from 'ora';
 import {
@@ -367,7 +369,7 @@ async function streamAndSave(
 	payload: TTSRequest,
 	latencyTier: number,
 	outputPath: string | undefined,
-	_shouldPlay: boolean,
+	shouldPlay: boolean,
 	spinner: ReturnType<typeof ora>
 ): Promise<number> {
 	const stream = await client.streamTTS(voiceId, payload, latencyTier);
@@ -403,11 +405,52 @@ async function streamAndSave(
 		log.info(`Audio saved to ${outputPath}`);
 	}
 
-	// Note: Browser/Node.js audio playback is complex and platform-dependent
-	// For now we just save the file; users can play it with their preferred player
-	// A full implementation would use something like node-speaker or similar
+	// Play audio
+	if (shouldPlay) {
+		await playAudio(audioData, spinner);
+	}
 
 	return totalBytes;
+}
+
+async function playAudio(audioData: Buffer, spinner: ReturnType<typeof ora>): Promise<void> {
+	const platform = os.platform();
+	
+	// Write to temp file
+	const tmpFile = path.join(os.tmpdir(), `awaz-${Date.now()}.mp3`);
+	fs.writeFileSync(tmpFile, audioData);
+
+	return new Promise((resolve, reject) => {
+		let player: ReturnType<typeof spawn>;
+
+		if (platform === 'darwin') {
+			player = spawn('afplay', [tmpFile]);
+		} else if (platform === 'linux') {
+			player = spawn('aplay', [tmpFile]);
+		} else if (platform === 'win32') {
+			player = spawn('powershell', ['-c', `(New-Object Media.SoundPlayer '${tmpFile}').PlaySync()`]);
+		} else {
+			fs.unlinkSync(tmpFile);
+			reject(new Error(`Unsupported platform: ${platform}`));
+			return;
+		}
+
+		spinner.text = 'Playing audio...';
+
+		player.on('close', (code) => {
+			fs.unlinkSync(tmpFile);
+			if (code === 0) {
+				resolve();
+			} else {
+				reject(new Error(`Audio player exited with code ${code}`));
+			}
+		});
+
+		player.on('error', (err) => {
+			fs.unlinkSync(tmpFile);
+			reject(err);
+		});
+	});
 }
 
 async function convertAndSave(
@@ -415,7 +458,7 @@ async function convertAndSave(
 	voiceId: string,
 	payload: TTSRequest,
 	outputPath: string | undefined,
-	_shouldPlay: boolean,
+	shouldPlay: boolean,
 	spinner: ReturnType<typeof ora>
 ): Promise<number> {
 	spinner.text = 'Converting text to speech...';
@@ -429,6 +472,11 @@ async function convertAndSave(
 		}
 		fs.writeFileSync(outputPath, audioData);
 		log.info(`Audio saved to ${outputPath}`);
+	}
+
+	// Play audio
+	if (shouldPlay) {
+		await playAudio(audioData, spinner);
 	}
 
 	return audioData.length;

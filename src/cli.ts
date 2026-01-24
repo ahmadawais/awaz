@@ -1,4 +1,6 @@
 import { Command, Option } from 'commander';
+import { config } from 'dotenv';
+import { resolve } from 'node:path';
 import { createPromptingCommand, createSpeakCommand, createVoicesCommand } from './commands/index.js';
 import { banner, getVersion } from './utils/index.js';
 
@@ -19,7 +21,8 @@ program
 		new Option('--base-url <url>', 'Override ElevenLabs API base URL')
 			.default('https://api.elevenlabs.io')
 	)
-	.addOption(new Option('--local').hideHelp());
+	.addOption(new Option('--local').hideHelp())
+	.addOption(new Option('--env <path>', 'Load env file from path'));
 
 // Add commands
 program.addCommand(createSpeakCommand());
@@ -74,6 +77,19 @@ export async function run(): Promise<void> {
 	if (process.argv.includes('-v') || process.argv.includes('--version')) {
 		console.log(version);
 		process.exit(0);
+	}
+
+	// Load .env file: explicit path > local .env > env var
+	const envIndex = process.argv.findIndex(arg => arg === '--env');
+	const hasEnvFlag = envIndex !== -1 && process.argv[envIndex + 1];
+	const hasEnvKey = process.env.ELEVENLABS_API_KEY || process.env.AWAZ_API_KEY;
+
+	if (hasEnvFlag) {
+		config({ path: resolve(process.argv[envIndex + 1]), quiet: true });
+	}
+
+	if (!hasEnvFlag && !hasEnvKey) {
+		config({ quiet: true });
 	}
 
 	maybeDefaultToSpeak();
