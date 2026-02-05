@@ -4,6 +4,9 @@
 
 Text to speech CLI with ElevenLabs voices.
 
+[![npm](https://img.shields.io/npm/v/awaz?style=for-the-badge&color=8258C7)](https://www.npmjs.com/package/awaz)
+
+
 ```bash
 npx awaz
 
