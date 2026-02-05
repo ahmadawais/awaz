@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.0.3
+
+- Better usage docs.
+
 ## 0.0.2
 
 - Readme cover image.
