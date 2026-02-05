@@ -1,6 +1,8 @@
+<img src="https://raw.githubusercontent.com/ahmadawais/awaz/main/.github/awaz.jpeg" alt="awaz" />
+
 # awaz
 
-Text to speech. Done right.
+Text to speech CLI with ElevenLabs voices.
 
 ```bash
 npm i -g awaz
@@ -13,7 +15,7 @@ awaz "Ship it"
 export ELEVENLABS_API_KEY="your-key"
 ```
 
-Get one at [elevenlabs.io](https://elevenlabs.io)
+Get one at [elevenlabs.io](https://elevenlabs.io/app/developers/api-keys)
 
 ## Usage
 
@@ -74,7 +76,7 @@ ELEVENLABS_VOICE_ID   # Default voice (optional)
 ## For AI Agents
 
 ```bash
-npx skills ahmadawais/awaz
+npx skills add ahmadawais/awaz
 ```
 
 Agents can use awaz to speak text, generate audio files, or preview how text sounds. See [skills/SKILL.md](./skills/SKILL.md) for full agent instructions.
@@ -89,7 +91,7 @@ pnpm test
 
 ## Inspiration
 
-- macOS `say` command — the OG.
+- macOS `say` command, the OG.
 - steipete's `sag` in Go.
 
 ## License
