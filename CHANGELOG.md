@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.0.4
+
+- Better prompting guide.
+
 ## 0.0.3
 
 - Better usage docs.
