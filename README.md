@@ -1,4 +1,4 @@
-<img src="https://raw.githubusercontent.com/ahmadawais/awaz/main/.github/awaz.jpeg" alt="awaz" />
+<img src="https://raw.githubusercontent.com/ahmadawais/awaz/refs/heads/main/.github/awaz.jpeg" alt="awaz" />
 
 # awaz
 
