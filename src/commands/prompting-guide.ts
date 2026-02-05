@@ -30,7 +30,7 @@ Write how you'd say it. Short sentences. Natural breaks.
 
 Not every voice responds to every tag. Experiment.
 
-## The knobs
+## Options to customize
 
 **--stability** (0-1)
 Higher = consistent. Lower = varied. v3 uses presets: 0=Creative, 0.5=Natural, 1=Robust.
