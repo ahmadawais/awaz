@@ -5,7 +5,13 @@
 Text to speech CLI with ElevenLabs voices.
 
 ```bash
+npx awaz
+
+# or
+
 npm i -g awaz
+
+# Usage
 awaz "Ship it"
 ```
 
